@@ -9,7 +9,7 @@ export const newUserController = async (req = request, res = response) => {
     const usuario = await User.findOne({ email })
 
     if (usuario != null) {
-      res.status(400).json({
+      return res.status(400).json({
         ok: false,
         msg: 'User with that email already exists'
       })
@@ -21,7 +21,7 @@ export const newUserController = async (req = request, res = response) => {
     const salt = bcrypt.genSaltSync()
     user.password = bcrypt.hashSync(password, salt)
 
-    user.save()
+    await user.save()
 
     res.status(201).json({
       ok: true,
@@ -44,7 +44,7 @@ export const loginUserController = async (req = request, res = response) => {
 
     // Check password
     if (user == null || !bcrypt.compareSync(password, user.password)) {
-      res.status(400).json({
+      return res.status(400).json({
         ok: false,
         msg: 'Bad credentials'
       })

@@ -1,8 +1,9 @@
 import express from 'express'
-import authRouter from './routes/auth.routes.js'
+import { authRouter } from './routes/auth.routes.js'
 import dotenv from 'dotenv'
 import { connectDb } from './config/db.js'
 import cors from 'cors'
+import { eventRouter } from './routes/event.routes.js'
 
 // Initializing env variables
 dotenv.config()
@@ -21,6 +22,7 @@ app.use(express.json())
 
 // Routes
 app.use('/api/auth', authRouter)
+app.use('/api/event', eventRouter)
 
 // Listening request
 app.listen(process.env.PORT, async () => {
