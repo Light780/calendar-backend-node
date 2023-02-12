@@ -23,10 +23,14 @@ export const newUserController = async (req = request, res = response) => {
 
     await user.save()
 
+    // Generate JWT
+    const token = await generateJwt(user.id, user.name)
+
     res.status(201).json({
       ok: true,
       uid: user.id,
-      name: user.name
+      name: user.name,
+      token
     })
   } catch (error) {
     res.status(500).json({
@@ -53,7 +57,7 @@ export const loginUserController = async (req = request, res = response) => {
     // Generate JWT
     const token = await generateJwt(user.id, user.name)
 
-    res.status(201).json({
+    res.status(200).json({
       ok: true,
       uid: user.id,
       name: user.name,
@@ -73,7 +77,7 @@ export const renewUserController = async (req = request, res = response) => {
   // Generate New Token
   const token = await generateJwt(uid, name)
 
-  res.json({
+  res.status(200).json({
     ok: true,
     uid,
     name,
